@@ -4,29 +4,29 @@ import { Observable } from 'rxjs';
 import { Promotions } from '../data/promotions-entity';
 import { Promotion } from '../data/promotion-entity';
 import { PromotionForm } from '../data/promotionForm';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromotionService {
   urlAPI = "http://localhost:8080/api/v1/promotion";
-
-  // Obtener el nombre de usuario desde el localStorage
-  private username = localStorage.getItem('username');
-
-  // Nombre de usuario y contraseña codificados para el ejemplo (cambia para obtenerlos dinámicamente)
-  private password = '1234'; 
   
-  //inyectamos el cliente http para conectarnos
-  constructor(private httpCliente: HttpClient) { }
+  constructor(private httpCliente: HttpClient, private authService: AuthService) { }
 
   // Método para obtener las cabeceras con autorización
   private getAuthHeaders(): HttpHeaders {
-    const encodedCredentials = btoa(`${this.username}:${this.password}`);
-    return new HttpHeaders({
-      'Authorization': `Basic ${encodedCredentials}`
-    });
-  }
+    const username = this.authService.getUsername();
+    const password = this.authService.getPassword();
+  
+    if (username && password) {
+      const encodedCredentials = btoa(`${username}:${password}`);
+      return new HttpHeaders({ 'Authorization': `Basic ${encodedCredentials}` });
+    } else {
+      alert("Por favor inicia sesión");
+      throw new Error('No se encontraron credenciales de autenticación');
+    }
+  }  
 
   getAllPromotions(): Observable<Promotions> {
     return this.httpCliente.get<Promotions>(`${this.urlAPI}/listar`, {

@@ -8,12 +8,24 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth/login';
+  private password: string | null = null;  // Almacena temporalmente el password en memoria
 
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string): Observable<any> {
+    this.password = password;
+    localStorage.setItem('username', username); 
+    sessionStorage.setItem('password', password); // Guardar el password temporalmente
     return this.http.post(this.apiUrl, { username, password });
   }
+  
+  getPassword(): string | null {
+    return sessionStorage.getItem('password');  // Obtener el password desde sessionStorage
+  }
+  
+  clearPassword(): void {
+    sessionStorage.removeItem('password');  // Limpiar el password después del logout
+  }  
 
   logout(): void {
     // Eliminar el token de localStorage o sessionStorage
@@ -27,7 +39,6 @@ export class AuthService {
 
   saveUserData(username: string, token: string): void {
     localStorage.setItem('username', username); // Guardar el username
-    localStorage.setItem('token', token);       // Guardar el token
   }
 
   getUsername(): string | null {
