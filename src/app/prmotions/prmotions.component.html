@@ -1,0 +1,211 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+
+<div class="container">
+  <div class="button-container my-3">
+    <!-- Botón para abrir el modal -->
+    <button
+      type="button"
+      class="btn btn-success"
+      data-bs-toggle="modal"
+      data-bs-target="#agregarModal"
+    >
+      Agregar
+    </button>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Fecha inicio</th>
+        <th scope="col">Fecha final</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let promotion of listadoPromotions; trackBy: trackById">
+        <td>{{ promotion.id }}</td>
+        <td>{{ promotion.name }}</td>
+        <td>{{ promotion.description }}</td>
+        <td>{{ promotion.startDate }}</td>
+        <td>{{ promotion.endDate }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizarModal" (click)="seleccionarPromotion(promotion)">Actualizar</button>
+          <button type="button" class="btn btn-danger" (click)="EliminarPromotion(promotion.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>    
+  </table>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="agregarModal"
+  tabindex="-1"
+  aria-labelledby="agregarModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="agregarModalLabel">Agregar Promoción</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario para agregar promoción -->
+        <form>
+          <div class="form-group mb-3">
+            <label for="nombre">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              name="nombre"
+              placeholder="Nombre de la promoción"
+              [(ngModel)]="newPromotion.name"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="descripcion">Descripción</label>
+            <textarea
+              class="form-control"
+              id="descripcion"
+              name="descripcion"
+              rows="3"
+              placeholder="Descripción de la promoción"
+              [(ngModel)]="newPromotion.description"
+            ></textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label for="fechaInicio">Fecha de inicio</label>
+            <input
+              type="date"
+              class="form-control"
+              id="fechaInicio"
+              name="fechaInicio"
+              [(ngModel)]="newPromotion.startDate"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="fechaFinal">Fecha final</label>
+            <input
+              type="date"
+              class="form-control"
+              id="fechaFinal"
+              name="fechaFinal"
+              [(ngModel)]="newPromotion.endDate"
+            />
+          </div>
+        </form>
+                        
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="guardarPromotion()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para actualizar promoción -->
+<div
+  class="modal fade"
+  id="actualizarModal"
+  tabindex="-1"
+  aria-labelledby="actualizarModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="actualizarModalLabel">Actualizar Promoción</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulario para actualizar promoción -->
+        <form>
+          <div class="form-group mb-3">
+            <label for="actualizarNombre">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="actualizarNombre"
+              name="actualizarNombre"
+              placeholder="Nombre de la promoción"
+              [(ngModel)]="selectedPromotion.name"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="actualizarDescripcion">Descripción</label>
+            <textarea
+              class="form-control"
+              id="actualizarDescripcion"
+              name="actualizarDescripcion"
+              rows="3"
+              placeholder="Descripción de la promoción"
+              [(ngModel)]="selectedPromotion.description"
+            ></textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label for="actualizarFechaInicio">Fecha de inicio</label>
+            <input
+              type="date"
+              class="form-control"
+              id="actualizarFechaInicio"
+              name="actualizarFechaInicio"
+              [(ngModel)]="selectedPromotion.startDate"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="actualizarFechaFinal">Fecha final</label>
+            <input
+              type="date"
+              class="form-control"
+              id="actualizarFechaFinal"
+              name="actualizarFechaFinal"
+              [(ngModel)]="selectedPromotion.endDate"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cerrar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="actualizarPromotion()"
+        >
+          Actualizar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

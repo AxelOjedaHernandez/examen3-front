@@ -1,0 +1,22 @@
+<div class="container">
+  <nav>
+    <ul class="nav nav-underline">
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/promociones">Promociones</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/creditos">Creditos</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="user-container">
+    <h5>{{ userName || 'Invitado' }}</h5>
+  </div>
+  <div>
+    <button class="btn btn-primary" (click)="logout()">Cerrar Sesión</button>
+  </div>
+  
+</div>
