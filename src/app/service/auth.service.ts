@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth/login';
+  private apiUrl = 'https://examen3-back.onrender.com/api/auth/login';
   private password: string | null = null;  // Almacena temporalmente el password en memoria
 
   constructor(private http: HttpClient, private router: Router) {}

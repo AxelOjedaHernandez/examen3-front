@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class PromotionService {
-  urlAPI = "http://localhost:8080/api/v1/promotion";
+  urlAPI = "https://examen3-back.onrender.com/api/v1/promotion";
   
   constructor(private httpCliente: HttpClient, private authService: AuthService) { }
 
